@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Relatório - Sistema de Corridas{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h2>Relatório de Corridas e Custos</h2>
+        </div>
+        <div class="card-body">
+            <!-- Mensagem indicando o período selecionado -->
+            {% if periodo %}
+            <p>Período selecionado: {{ periodo.inicio|string|replace('-', '/') }} até {{ periodo.fim|string|replace('-',
+                '/') }}</p>
+            {% else %}
+            <p>Nenhum período selecionado. Exibindo dados gerais.</p>
+            {% endif %}
+
+            <!-- Destaques de Ganho Bruto, Custos e Lucro -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card text-white mb-3" style="background-color: rgba(0, 123, 255, 0.6);">
+                        <div class="card-header font-weight-bold">Ganho Bruto</div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">R$ {{ dados['total_recebido_periodo'] }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white mb-3" style="background-color: rgba(220, 53, 69, 0.6);">
+                        <div class="card-header font-weight-bold">Custos</div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">R$ {{ dados['total_custos'] }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white mb-3" style="background-color: rgba(40, 167, 69, 0.6);">
+                        <div class="card-header font-weight-bold">Lucro</div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">R$ {{ dados['lucro'] }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu de Navegação das Abas -->
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-corridas-tab" data-toggle="tab" href="#nav-corridas"
+                        role="tab" aria-controls="nav-corridas" aria-selected="true">Corridas</a>
+                    <a class="nav-item nav-link" id="nav-combustivel-tab" data-toggle="tab" href="#nav-combustivel"
+                        role="tab" aria-controls="nav-combustivel" aria-selected="false">Combustível</a>
+                    <a class="nav-item nav-link" id="nav-custos-tab" data-toggle="tab" href="#nav-custos" role="tab"
+                        aria-controls="nav-custos" aria-selected="false">Custos</a>
+                </div>
+            </nav>
+
+            <div class="tab-content mt-4" id="nav-tabContent">
+                <!-- Conteúdo da Aba Corridas -->
+                <div class="tab-pane fade show active" id="nav-corridas" role="tabpanel"
+                    aria-labelledby="nav-corridas-tab">
+                    <h4>Corridas por Aplicativo</h4>
+                    <ul>
+                        {% for item in dados['corridas_por_app'] %}
+                        <li><strong>{{ item['app'] }}</strong>: {{ item['quantidade'] }} corridas, R$ {{
+                            item['total_valor'] }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Exibir o aplicativo mais utilizado -->
+                    {% if dados['app_mais_utilizado'] %}
+                    <div class="mt-4">
+                        <h5>Aplicativo Mais Utilizado:</h5>
+                        <p><strong>{{ dados['app_mais_utilizado']['app'] }}</strong>: {{
+                            dados['app_mais_utilizado']['quantidade'] }} corridas, R$ {{
+                            dados['app_mais_utilizado']['total'] }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Exibir o valor total -->
+                    <div class="mt-4">
+                        <h5>Valor Total:</h5>
+                        <p><strong>R$ {{ dados['total_corridas'] }}</strong></p>
+                    </div>
+                </div>
+
+                <!-- Conteúdo da Aba Combustível -->
+                <div class="tab-pane fade" id="nav-combustivel" role="tabpanel" aria-labelledby="nav-combustivel-tab">
+                    <h4>Gasto por Tipo de Combustível</h4>
+                    <ul>
+                        {% for item in dados['gasto_por_combustivel'] %}
+                        <li>{{ item['combustivel'] }}: R$ {{ item['total'] }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Exibir o tipo de combustível mais utilizado -->
+                    {% if dados['tipo_combustivel_mais_usado'] %}
+                    <div class="mt-4">
+                        <h5>Tipo de Combustível Mais Utilizado:</h5>
+                        <p><strong>{{ dados['tipo_combustivel_mais_usado']['combustivel'] }}</strong> com um total de R$
+                            {{ dados['tipo_combustivel_mais_usado']['total'] }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Exibir o total gasto com combustível -->
+                    <div class="mt-4">
+                        <h5>Total Gasto com Combustível:</h5>
+                        <p><strong>R$ {{ dados['total_combustivel'] }}</strong></p>
+                    </div>
+                </div>
+
+                <!-- Conteúdo da Aba Custos -->
+                <div class="tab-pane fade" id="nav-custos" role="tabpanel" aria-labelledby="nav-custos-tab">
+                    <h4>Gasto por Tipo de Custo</h4>
+                    <ul>
+                        {% for item in dados['custos_por_tipo'] %}
+                        <li>{{ item['tipo'] }}: R$ {{ item['total'] }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Exibir o valor total dos custos -->
+                    <div class="mt-4">
+                        <h5>Total de Custos:</h5>
+                        <p><strong>R$ {{ dados['total_custos'] }}</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulário para selecionar o período -->
+            <form method="POST" class="mt-4">
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <label for="data_inicio">Data de Início:</label>
+                        <input type="date" class="form-control" id="data_inicio" name="data_inicio"
+                            value="{{ data_inicio }}" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="data_fim">Data de Fim:</label>
+                        <input type="date" class="form-control" id="data_fim" name="data_fim" value="{{ data_fim }}"
+                            required>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Botão para Download do Relatório -->
+            <div class="text-center mt-4">
+                <a href="#" id="download-link" class="btn btn-success">Download do Relatório (.txt)</a>
+            </div>
+
+            <!-- Script para adicionar as datas ao link de download -->
+            <script>
+                document.getElementById('download-link').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const dataInicio = document.getElementById('data_inicio').value;
+                    const dataFim = document.getElementById('data_fim').value;
+                    const downloadUrl = `{{ url_for('download_relatorio') }}?data_inicio=${dataInicio}&data_fim=${dataFim}`;
+                    window.location.href = downloadUrl;
+                });
+            </script>
+
+
+
+            {% endblock %}

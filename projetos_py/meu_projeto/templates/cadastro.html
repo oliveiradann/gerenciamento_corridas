@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Nova Corrida{% endblock %}
+
+{% block content %}
+<div class="card mt-4 shadow-lg">
+    <div class="card-header bg-dark text-white text-center py-4">
+        <h2>Cadastrar Nova Corrida</h2>
+    </div>
+    <div class="card-body">
+        <p class="lead text-center">Preencha o formulário abaixo para cadastrar uma nova corrida.</p>
+        <form method="POST" action="{{ url_for('cadastro') }}" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="data"><i class="fas fa-calendar-alt"></i> Data:</label>
+                <input type="date" class="form-control" id="data" name="data" required value="{{ current_date }}">
+                <div class="invalid-feedback">Por favor, selecione uma data.</div>
+            </div>
+            <div class="form-group">
+                <label for="app"><i class="fas fa-mobile-alt"></i> Aplicativo:</label>
+                <select class="form-control" id="app" name="app" required>
+                    <option value="" disabled selected>Selecione o Aplicativo</option>
+                    <option value="Uber">Uber</option>
+                    <option value="99">99</option>
+                    <option value="Cabify">Cabify</option>
+                    <option value="Outros">Outros</option>
+                </select>
+                <div class="invalid-feedback">Por favor, selecione um aplicativo.</div>
+            </div>
+            <div class="form-group">
+                <label for="distancia"><i class="fas fa-road"></i> Distância (km):</label>
+                <input type="number" step="0.01" class="form-control" id="distancia" name="distancia" required>
+                <div class="invalid-feedback">Por favor, insira a distância percorrida.</div>
+            </div>
+            <div class="form-group">
+                <label for="valor"><i class="fas fa-dollar-sign"></i> Valor (R$):</label>
+                <input type="number" step="0.01" class="form-control" id="valor" name="valor" required>
+                <div class="invalid-feedback">Por favor, insira o valor da corrida.</div>
+            </div>
+            <div class="form-group">
+                <label for="pagamento"><i class="fas fa-credit-card"></i> Forma de Pagamento:</label>
+                <select class="form-control" id="pagamento" name="pagamento" required>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cartão de Crédito">Cartão de Crédito</option>
+                    <option value="Cartão de Débito">Cartão de Débito</option>
+                    <option value="Pix">Pix</option>
+                </select>
+                <div class="invalid-feedback">Por favor, selecione a forma de pagamento.</div>
+            </div>
+            <button type="submit" class="btn btn-success btn-block btn-lg mt-4">Cadastrar Corrida <i
+                    class="fas fa-check-circle"></i></button>
+        </form>
+    </div>
+</div>
+{% endblock %}

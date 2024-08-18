@@ -1,0 +1,145 @@
+/* Estilos Globais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    /* Cor de fundo do site */
+    color: #343a40;
+    /* Cor padrão do texto */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    /* Garantir que o conteúdo ocupe todo o espaço disponível */
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Estilos do Navbar */
+.navbar {
+    margin-bottom: 20px;
+}
+
+/* Estilos do Card */
+.card {
+    border-radius: 10px;
+    /* Cantos arredondados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+}
+
+/* Efeito de Vidro nas Caixas de Destaque */
+.glass-card {
+    backdrop-filter: blur(10px);
+    /* Efeito de desfoque */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Borda sutil */
+    border-radius: 10px;
+    /* Cantos arredondados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    background-clip: padding-box;
+    /* Para garantir que a sombra interna fique visível */
+    padding: 10px;
+    /* Espaçamento interno */
+    min-height: 100px;
+}
+
+/* Estilo para o Botão */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+/* Estilos para o Footer */
+footer {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    /* Altere de fixed para relative */
+    width: 100%;
+    margin-top: 20px;
+    /* Adiciona margem superior para distanciar do conteúdo */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    /* Fazer o botão ocupar toda a largura em telas menores */
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Remoção do Fundo Azul nos Títulos */
+.card-header {
+    background-color: transparent;
+    color: #343a40;
+    padding: 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Sombreamento no Texto das Caixas de Destaque */
+.page-relatorio .glass-card .card-header,
+.page-relatorio .glass-card .card-body {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Ajuste de Títulos em Relatórios */
+.page-relatorio h4,
+.page-relatorio h5 {
+    margin-top: 20px;
+}
+
+/* Ajuste nas Abas do Relatório */
+.nav-tabs .nav-link {
+    color: #007bff;
+    /* Cor padrão do link */
+}
+
+.nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.tab-content {
+    padding-top: 20px;
+}

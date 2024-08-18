@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Sistema de Corridas{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center bg-dark text-white">
+    <h1 class="display-4">Bem-vindo ao Sistema de Corridas</h1>
+    <p class="lead">Gerencie suas corridas e custos de forma fácil e eficiente.</p>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-6 mb-4">
+        <div class="card bg-light shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total de Ganhos Hoje</h5>
+                <p class="card-text">R$ {{ total_valor }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card bg-light shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total de Quilômetros Rodados Hoje</h5>
+                <p class="card-text">{{ total_km }} km</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left btn-transparent" type="button" data-toggle="collapse"
+                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Corridas Cadastradas
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                {% if corridas %}
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>App</th>
+                            <th>Distância (km)</th>
+                            <th>Valor (R$)</th>
+                            <th>Pagamento</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for corrida in corridas %}
+                        <tr>
+                            <td>{{ corrida.data }}</td>
+                            <td>{{ corrida.app }}</td>
+                            <td>{{ corrida.distancia }}</td>
+                            <td>{{ corrida.valor }}</td>
+                            <td>{{ corrida.pagamento }}</td>
+                            <td>
+                                <form action="{{ url_for('delete_corrida', id=corrida.id) }}" method="POST"
+                                    style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>Nenhuma corrida cadastrada.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left collapsed btn-transparent" type="button"
+                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Custos Cadastrados
+                </button>
+            </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+                {% if custos %}
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Combustível</th>
+                            <th>Tipo Específico</th>
+                            <th>Valor (R$)</th>
+                            <th>Pagamento</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for custo in custos %}
+                        <tr>
+                            <td>{{ custo.data }}</td>
+                            <td>{{ custo.tipo }}</td>
+                            <td>{{ custo.combustivel if custo.tipo == 'Combustível' else '-' }}</td>
+                            <td>{{ custo.tipo_especifico if custo.tipo != 'Combustível' else '-' }}</td>
+                            <td>{{ custo.valor }}</td>
+                            <td>{{ custo.pagamento }}</td>
+                            <td>
+                                <form action="{{ url_for('delete_custo', id=custo.id) }}" method="POST"
+                                    style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>Nenhum custo cadastrado.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{{ url_for('cadastro') }}" class="btn btn-cadastro-corridas">Cadastrar Corridas</a>
+</div>
+{% endblock %}
